@@ -1,6 +1,5 @@
 import Groq from 'groq-sdk';
 
-// WHY: Create client inside function so it reads env var at call time, not import time
 const getClient = () => {
   if (!process.env.GROQ_API_KEY) {
     throw new Error('GROQ_API_KEY is missing from environment variables');
@@ -22,10 +21,17 @@ Format: ["question 1", "question 2", "question 3", "question 4", "question 5"]`;
   try {
     const client = getClient();
     const response = await client.chat.completions.create({
-      model: 'llama-3.1-8b-instant',
-      messages: [{ role: 'user', content: prompt }],
+      model: 'llama-3.3-70b-versatile',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are an expert interviewer. Respond ONLY with a valid JSON array. No markdown, no explanation, no extra text.'
+        },
+        { role: 'user', content: prompt }
+      ],
       temperature: 0.7,
     });
+    console.log('✓ Questions generated');
     return safeJSON(response.choices[0].message.content);
   } catch (err) {
     console.error('❌ GROQ ERROR:', err.message);
@@ -61,13 +67,21 @@ Respond ONLY with valid JSON. No markdown. No extra text before or after.
   try {
     const client = getClient();
     const response = await client.chat.completions.create({
-      model: 'llama-3.1-8b-instant',
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.3,
+      model: 'llama-3.3-70b-versatile',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are an expert interview evaluator. You ALWAYS respond with valid JSON only. Never add markdown, explanations, or text outside the JSON object.'
+        },
+        { role: 'user', content: prompt }
+      ],
+      temperature: 0.1,
     });
-    return safeJSON(response.choices[0].message.content);
+    const raw = response.choices[0].message.content;
+    console.log('✓ Raw AI response:', raw.slice(0, 100));
+    return safeJSON(raw);
   } catch (err) {
-    console.error('❌ GROQ ERROR:', err.message);
+    console.error('❌ GROQ EVAL ERROR:', err.message);
     return {
       overallScore: 5,
       dimensions: {
