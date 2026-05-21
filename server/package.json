@@ -1,0 +1,25 @@
+{
+  "name": "interviewcoach-server",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "latest",
+    "cors": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "groq-sdk": "^1.2.0",
+    "openai": "^6.38.0"
+  },
+  "devDependencies": {
+    "nodemon": "latest"
+  },
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
