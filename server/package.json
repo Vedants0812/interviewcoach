@@ -7,19 +7,12 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
-    "@google/generative-ai": "latest",
     "cors": "latest",
     "dotenv": "latest",
     "express": "latest",
-    "groq-sdk": "^1.2.0",
-    "openai": "^6.38.0"
+    "groq-sdk": "latest"
   },
   "devDependencies": {
     "nodemon": "latest"
-  },
-  "description": "",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  }
 }
