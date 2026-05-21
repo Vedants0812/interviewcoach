@@ -5,7 +5,7 @@ import FeedbackPanel from './components/FeedbackPanel';
 import Summary from './components/Summary';
 import './App.css';
 
-const API = 'http://localhost:3001/api/interview';
+const API = 'https://interviewcoach-production-da55.up.railway.app';
 
 export default function App() {
   const [phase, setPhase] = useState('setup');
