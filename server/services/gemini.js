@@ -1,8 +1,12 @@
 import Groq from 'groq-sdk';
-import dotenv from 'dotenv';
-dotenv.config();
 
-const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
+// WHY: Create client inside function so it reads env var at call time, not import time
+const getClient = () => {
+  if (!process.env.GROQ_API_KEY) {
+    throw new Error('GROQ_API_KEY is missing from environment variables');
+  }
+  return new Groq({ apiKey: process.env.GROQ_API_KEY });
+};
 
 const safeJSON = (text) => {
   const clean = text.replace(/```json|```/g, '').trim();
@@ -16,6 +20,7 @@ Respond ONLY with a JSON array. No explanation. No markdown.
 Format: ["question 1", "question 2", "question 3", "question 4", "question 5"]`;
 
   try {
+    const client = getClient();
     const response = await client.chat.completions.create({
       model: 'llama-3.1-8b-instant',
       messages: [{ role: 'user', content: prompt }],
@@ -54,6 +59,7 @@ Respond ONLY with valid JSON. No markdown. No extra text before or after.
 }`;
 
   try {
+    const client = getClient();
     const response = await client.chat.completions.create({
       model: 'llama-3.1-8b-instant',
       messages: [{ role: 'user', content: prompt }],
