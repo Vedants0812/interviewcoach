@@ -1,13 +1,9 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import interviewRouter from './routes/interview.js';
-
-dotenv.config();
 
 const app = express();
 
-// Allows your React app on port 5173 to talk to this server
 app.use(cors());
 app.use(express.json());
 
